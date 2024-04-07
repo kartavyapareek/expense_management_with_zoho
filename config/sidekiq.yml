@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+:schedule:
+  customer_sync_job:
+    cron: '0 0 * * *' # Run every day at midnight
+    class: 'CustomerSyncWorker'
+    queue: 'default'
+  expense_sync_job:
+    cron: '0 0 * * *' # Run every day at midnight
+    class: 'ExpenseSyncWorker'
+    queue: 'default'

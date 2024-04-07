@@ -2,7 +2,7 @@
 
 class ZohoToken < ApplicationRecord
   def valid_access_token
-    refresh if expired?
+    access_token_via_refresh_token if expired?
 
     access_token
   end
@@ -11,7 +11,7 @@ class ZohoToken < ApplicationRecord
     expires_in > Time.now.to_i
   end
 
-  def refresh
+  def access_token_via_refresh_token
     ZohoAuthorizationService.new.refresh_access_token
 
     ZohoToken.last.access_token if ZohoToken.last.expires_in > Time.now.to_i
