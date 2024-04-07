@@ -15,7 +15,7 @@ class CustomerSyncWorker
     response = ZohoOperationService.new.create_customer(customer)
     next unless response.code == 201
 
-    customer.update(zoho_id: response['customer_id'], synced_with_zoho: true) if response['customer_id']
+    customer.update(zoho_id: response.fetch('contact', 'contact_id'), synced_with_zoho: true) if response['contact']
     puts "Syncing customer with Zoho: #{customer.name}"
   end
 end

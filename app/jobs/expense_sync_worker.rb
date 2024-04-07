@@ -15,7 +15,7 @@ class ExpenseSyncWorker
     response = ZohoOperationService.new.create_expense_report(expense)
     next unless response.code == 201
 
-    expense.update(zoho_id: response['expense_report_id'], synced_with_zoho: true) if response['expense_report_id']
+    expense.update(zoho_id: response.fetch('expense', 'expense_id'), synced_with_zoho: true) if response['expense']
     puts "Syncing expense with Zoho: #{expense.name}"
   end
 end
