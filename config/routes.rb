@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get 'zoho_authorization/redirect', to: 'zoho_authorization#redirect', as: :zoho_authorization_redirect
   get 'zoho_authorization/callback', to: 'zoho_authorization#callback', as: :zoho_authorization_callback
 
+  get 'zoho_data_fetch/fetch_customer_data', to: 'zoho_data_fetch#fetch_customer_data', as: :fetch_customer_data
+  get 'zoho_data_fetch/fetch_expense_report_data', to: 'zoho_data_fetch#fetch_expense_report_data',
+                                                   as: :fetch_expense_report_data
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

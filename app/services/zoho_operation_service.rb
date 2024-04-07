@@ -38,7 +38,8 @@ class ZohoOperationService
   end
 
   def fetch_customer(customer_id)
-    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/customers/#{customer_id}"
+    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/customers/#{customer_id}?" \
+          "organization_id=#{ENV.fetch('ZOHO_ORGANIZATION_ID')}"
     headers = { 'Authorization' => "Zoho-oauthtoken #{@access_token}", 'Content-Type' => 'application/json' }
     response = HTTParty.get(url, headers:)
     return JSON.parse(response.body) if response.code == 200
@@ -47,7 +48,8 @@ class ZohoOperationService
   end
 
   def fetch_expense_report(expense_report_id)
-    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/expenses/#{expense_report_id}"
+    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/expenses/#{expense_report_id}?" \
+          "organization_id=#{ENV.fetch('ZOHO_ORGANIZATION_ID')}"
     headers = { 'Authorization' => "Zoho-oauthtoken #{@access_token}", 'Content-Type' => 'application/json' }
     response = HTTParty.get(url, headers:)
     return JSON.parse(response.body) if response.code == 200
