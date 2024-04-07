@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class ZohoToken < ApplicationRecord
-  def access_token
+  def valid_access_token
     refresh if expired?
 
-    super
+    access_token
   end
 
   def expired?

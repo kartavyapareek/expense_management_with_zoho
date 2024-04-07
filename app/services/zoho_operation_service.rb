@@ -5,11 +5,11 @@ class ZohoOperationService
     @client_id = ENV.fetch('ZOHO_CLIENT_ID')
     @client_secret = ENV.fetch('ZOHO_CLIENT_SECRET')
     @redirect_uri = ENV.fetch('ZOHO_REDIRECT_URL')
-    @access_token = ZohoToken.last.access_token
+    @access_token = ZohoToken.last.valid_access_token
   end
 
   def create_customer(customer)
-    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/customers"
+    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/books/v3/customers?organization_id=#{ENV.fetch('ZOHO_ORGANIZATION_ID')}"
     headers = { Authorization: "Zoho-oauthtoken #{@access_token}", content_type: 'application/json' }
     body = {
       contact_name: customer.name,
@@ -23,7 +23,7 @@ class ZohoOperationService
   end
 
   def create_expense_report(expense_report)
-    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/books/v3/expense-reports"
+    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/books/v3/expense-reports?organization_id=#{ENV.fetch('ZOHO_ORGANIZATION_ID')}"
     headers = { Authorization: "Zoho-oauthtoken #{@access_token}", content_type: 'application/json' }
     body = {
       customer_id: expense_report.customer.zoho_id,
