@@ -1,0 +1,10 @@
+# .rubocop.yml
+AllCops:
+  NewCops: enable 
+  SuggestExtensions: false
+  Exclude:
+    - "bin/*"
+Style/Documentation:
+  Enabled: false
+Metrics/BlockLength:
+  Max: 30
