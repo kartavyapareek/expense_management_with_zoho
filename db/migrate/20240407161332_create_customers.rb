@@ -5,7 +5,8 @@ class CreateCustomers < ActiveRecord::Migration[7.1]
     create_table :customers do |t|
       t.string :name
       t.string :email
-      t.references :zoho_customer_id, null: false, foreign_key: true
+      t.boolean :synced_with_zoho, default: false
+      t.integer :zoho_id
       t.timestamps
     end
   end

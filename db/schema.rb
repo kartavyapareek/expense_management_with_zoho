@@ -16,16 +16,18 @@ ActiveRecord::Schema[7.1].define(version: 20_240_407_161_348) do
   create_table 'customers', force: :cascade do |t|
     t.string 'name'
     t.string 'email'
-    t.integer 'zoho_customer_id_id', null: false
+    t.boolean 'synced_with_zoho', default: false
+    t.integer 'zoho_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
-    t.index ['zoho_customer_id_id'], name: 'index_customers_on_zoho_customer_id_id'
   end
 
   create_table 'expense_reports', force: :cascade do |t|
     t.string 'title'
     t.string 'description'
     t.integer 'amount'
+    t.boolean 'synced_with_zoho', default: false
+    t.integer 'zoho_id'
     t.integer 'customer_id', null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
@@ -40,6 +42,5 @@ ActiveRecord::Schema[7.1].define(version: 20_240_407_161_348) do
     t.datetime 'updated_at', null: false
   end
 
-  add_foreign_key 'customers', 'zoho_customer_ids'
   add_foreign_key 'expense_reports', 'customers'
 end

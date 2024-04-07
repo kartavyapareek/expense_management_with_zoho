@@ -1,75 +1,63 @@
 # frozen_string_literal: true
 
 class ExpenseReportsController < ApplicationController
-  before_action :set_expense_report, only: %i[show edit update destroy]
+  before_action :set_customer
+  before_action :set_expense_report, only: %i[show update destroy]
 
-  # GET /expense_reports or /expense_reports.json
+  # GET /customers/:customer_id/expense_reports
   def index
-    @expense_reports = ExpenseReport.all
+    @expense_reports = @customer&.expense_reports
+
+    if @expense_reports.empty?
+      render json: { message: 'No expense reports found' }, status: :not_found
+    else
+      render json: @expense_reports
+    end
   end
 
-  # GET /expense_reports/1 or /expense_reports/1.json
-  def show; end
-
-  # GET /expense_reports/new
-  def new
-    @expense_report = ExpenseReport.new
+  # GET /customers/:customer_id/expense_reports/1
+  def show
+    render json: @expense_report
   end
 
-  # GET /expense_reports/1/edit
-  def edit; end
-
-  # POST /expense_reports or /expense_reports.json
+  # POST /customers/:customer_id/expense_reports
   def create
-    @expense_report = ExpenseReport.new(expense_report_params)
+    @expense_report = @customer.expense_reports.new(expense_report_params)
 
-    respond_to do |format|
-      if @expense_report.save
-        format.html do
-          redirect_to expense_report_url(@expense_report), notice: 'Expense report was successfully created.'
-        end
-        format.json { render :show, status: :created, location: @expense_report }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @expense_report.errors, status: :unprocessable_entity }
-      end
+    if @expense_report.save
+      render json: @expense_report, status: :created, location: [@customer, @expense_report]
+    else
+      render json: @expense_report.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /expense_reports/1 or /expense_reports/1.json
+  # PATCH/PUT /customers/:customer_id/expense_reports/1
   def update
-    respond_to do |format|
-      if @expense_report.update(expense_report_params)
-        format.html do
-          redirect_to expense_report_url(@expense_report), notice: 'Expense report was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @expense_report }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @expense_report.errors, status: :unprocessable_entity }
-      end
+    if @expense_report.update(expense_report_params)
+      render json: @expense_report
+    else
+      render json: @expense_report.errors, status: :unprocessable_entity
     end
   end
 
-  # DELETE /expense_reports/1 or /expense_reports/1.json
+  # DELETE /customers/:customer_id/expense_reports/1
   def destroy
     @expense_report.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to expense_reports_url, notice: 'Expense report was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
 
   # Use callbacks to share common setup or constraints between actions.
+  def set_customer
+    @customer = Customer.find(params[:customer_id])
+  end
+
   def set_expense_report
-    @expense_report = ExpenseReport.find(params[:id])
+    @expense_report = @customer.expense_reports.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def expense_report_params
-    params.fetch(:expense_report, {})
+    params.require(:expense_report).permit(:customer, :title, :description, :amount)
   end
 end
