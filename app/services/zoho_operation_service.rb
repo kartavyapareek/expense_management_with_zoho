@@ -21,4 +21,37 @@ class ZohoOperationService
 
     response
   end
+
+  def create_expense_report(expense_report)
+    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/books/v3/expense-reports"
+    headers = { Authorization: "Zoho-oauthtoken #{@access_token}", content_type: 'application/json' }
+    body = {
+      customer_id: expense_report.customer.zoho_id,
+      title: expense_report.title,
+      description: expense_report.description,
+      amount: expense_report.amount
+    }
+    response = HTTParty.post(url, headers:, body: body.to_json)
+    return 'Expense report created successfully' if response.code == 200
+
+    response
+  end
+
+  def fetch_customer(customer_id)
+    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/books/v3/customers/#{customer_id}"
+    headers = { Authorization: "Zoho-oautohtoken #{@access_token}", content_type: 'application/json' }
+    response = HTTParty.get(url, headers:)
+    return JSON.parse(response.body) if response.code == 200
+
+    response
+  end
+
+  def fetch_expense_report(expense_report_id)
+    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/books/v3/expense-reports/#{expense_report_id}"
+    headers = { Authorization: "Zoho-oauthtoken #{@access_token}", content_type: 'application/json' }
+    response = HTTParty.get(url, headers:)
+    return JSON.parse(response.body) if response.code == 200
+
+    response
+  end
 end

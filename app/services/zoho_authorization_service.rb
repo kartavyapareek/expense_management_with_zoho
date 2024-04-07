@@ -2,7 +2,7 @@
 
 class ZohoAuthorizationService
   def authorization_url
-    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/oauth/v2/auth"
+    url = "#{ENV.fetch('ZOHO_AUTH_API_BASE_URL')}/oauth/v2/auth"
     params = "scope=ZohoBooks.fullaccess.all&client_id=#{ENV.fetch('ZOHO_CLIENT_ID')}&" \
              "response_type=code&redirect_uri=#{ENV.fetch('ZOHO_REDIRECT_URL')}&access_type=offline&prompt=consent"
     "#{url}?#{params}"
@@ -13,7 +13,9 @@ class ZohoAuthorizationService
     client_secret = ENV.fetch('ZOHO_CLIENT_SECRET')
     redirect_uri = ENV.fetch('ZOHO_REDIRECT_URL')
     grant_type = 'authorization_code'
-    url = "https://accounts.zoho.in/oauth/v2/token?code=#{code}&client_id=#{client_id}&client_secret=#{client_secret}&redirect_uri=#{redirect_uri}&grant_type=#{grant_type}"
+    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/oauth/v2/token?" \
+          "code=#{code}&client_id=#{client_id}&client_secret=#{client_secret}&" \
+          "redirect_uri=#{redirect_uri}&grant_type=#{grant_type}"
     response = HTTParty.post(url)
     return 'No token found' unless response['access_token'].present?
 
@@ -27,7 +29,9 @@ class ZohoAuthorizationService
     client_secret = ENV.fetch('ZOHO_CLIENT_SECRET')
     refresh_token = ZohoToken.last.refresh_token
     grant_type = 'refresh_token'
-    url = "https://accounts.zoho.in/oauth/v2/token?refresh_token=#{refresh_token}&client_id=#{client_id}&client_secret=#{client_secret}&grant_type=#{grant_type}"
+    url = "#{ENV.fetch('ZOHO_API_BASE_URL')}/oauth/v2/token?" \
+          "refresh_token=#{refresh_token}&client_id=#{client_id}&" \
+          "client_secret=#{client_secret}&grant_type=#{grant_type}"
     response = HTTParty.post(url)
     return 'No token found' unless response['access_token'].present?
 
