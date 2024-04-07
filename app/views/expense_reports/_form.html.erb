@@ -1,0 +1,17 @@
+<%= form_with(model: expense_report) do |form| %>
+  <% if expense_report.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(expense_report.errors.count, "error") %> prohibited this expense_report from being saved:</h2>
+
+      <ul>
+        <% expense_report.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

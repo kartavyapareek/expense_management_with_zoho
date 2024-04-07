@@ -10,3 +10,5 @@ Style/Documentation:
   Enabled: false
 Metrics/BlockLength:
   Max: 30
+Metrics/MethodLength:
+  Max: 20

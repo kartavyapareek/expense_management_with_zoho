@@ -5,6 +5,10 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
+  resources :customers do
+    resources :expense_reports
+  end
+
   get 'zoho_authorization/redirect', to: 'zoho_authorization#redirect', as: :zoho_authorization_redirect
   get 'zoho_authorization/callback', to: 'zoho_authorization#callback', as: :zoho_authorization_callback
 
