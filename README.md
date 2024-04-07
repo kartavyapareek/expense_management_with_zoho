@@ -1,24 +1,56 @@
-# README
+# Project README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Prerequisites
+- Ruby 3.1
+- Rails 7.1
+- Redis
+- Ngrok
 
-Things you may want to cover:
+## Steps
 
-* Ruby version
+### 1. Clone the project
+git clone <project_url>
 
-* System dependencies
+### 2. Install dependencies and set up database
+bundle install
+rake db:create db:migrate
 
-* Configuration
+### 3. Start the Server and Ngrok for creating a URL
+- Start Rails server:
+rails server
+- Start Ngrok:
+ngrok http <port_number>
 
-* Database creation
+### 4. Set up a server-based application on Zoho Books
+- Use the Ngrok URL with /zoho_authorization/callback
+- Obtain the client ID and client secret
 
-* Database initialization
+### 5. Set environment variables for the Rails application
 
-* How to run the test suite
+### 6. Run the server
+- Execute the following command:
+bin/dev
+This command starts the Rails server and Sidekiq server.
 
-* Services (job queues, cache servers, search engines, etc.)
+### 7. Authorize the Zoho API app via OAuth
+- Click on the authorization button when prompted.
 
-* Deployment instructions
+### 8. Access token retrieval
+- After completing the above step, the access token will be stored in the database.
 
-* ...
+### 9. Use Postman Collection to Create Customer and Expense
+- Utilize the provided Postman Collection with minimum data.
+
+### 10. Run Sidekiq Job Manual to Sync the data
+- Manually run Sidekiq job to synchronize the data and check the data on Zoho.
+
+## Improvement Areas
+1. Write RSpec for all model services and jobs.
+2. Optimize the method to generate the access token from the refresh token.
+3. Call the ZohoOperationService while creating the customer and expense.
+4. Create a separate controller or APIs to directly retrieve data from Zoho.
+
+
+## Creator's Notes
+We can discuss the improvement area over a call, and feel free to ask any queries or doubts.
+For further discussion, you can reach me at: pareekkartavya@gmail.com
