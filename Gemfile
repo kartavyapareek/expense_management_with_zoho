@@ -49,6 +49,12 @@ gem 'bootsnap', require: false
 # Use RuboCop to enforce a consistent Ruby code style
 gem 'rubocop-rails', require: false
 
+# Use the dotenv gem to load environment variables from a .env file into ENV
+gem 'dotenv-rails'
+
+# use HTTParty for making HTTP requests
+gem 'httparty'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]

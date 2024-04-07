@@ -12,6 +12,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
-  # will add migrations here
+ActiveRecord::Schema[7.1].define(version: 20_240_407_095_512) do
+  create_table 'zoho_tokens', force: :cascade do |t|
+    t.string 'access_token'
+    t.string 'refresh_token'
+    t.integer 'expires_in'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+  end
 end
